@@ -1,0 +1,111 @@
+[07-Dec-2025 17:24:22 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'religion' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:23 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'performance' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'performance' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:33 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'religion' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:33 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'animal_handling' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:34 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'acrobatics' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:35 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'acrobatics' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:36 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'animal_handling' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:54 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'acrobatics' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:54 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'animal_handling' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:56 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deception' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:24:56 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'history' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:25:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'acrobatics' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:27:21 UTC] PHP Warning:  Undefined array key "proficient" in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 263
+[07-Dec-2025 17:27:22 UTC] PHP Warning:  Undefined array key "proficient" in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 263
+[07-Dec-2025 17:27:23 UTC] PHP Warning:  Undefined array key "proficient" in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 263
+[07-Dec-2025 17:27:26 UTC] PHP Warning:  Undefined array key "proficient" in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 263
+[07-Dec-2025 17:27:28 UTC] PHP Warning:  Undefined array key "proficient" in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 263
+[07-Dec-2025 17:27:56 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'acrobatics' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:27:58 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'animal_handling' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:27:58 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deception' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:27:59 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'athletics' in 'field list' in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:196
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(196): mysqli->prepare('UPDATE characte...')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 196
+[07-Dec-2025 17:48:44 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/admin/tabs/gamestate.php on line 173
+[07-Dec-2025 17:49:49 UTC] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:528
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(528): mysqli_stmt->bind_param('sssiiiiiiiiss', 'asdf', 'asdf', '1', 10, 10, 10, 10, 10, 10, 10, 10, 10, 'asdf', 'sdaf')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 528
+[07-Dec-2025 19:24:04 UTC] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:528
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(528): mysqli_stmt->bind_param('sssiiiiiiiiss', 'sdf', 'asdf', '1', 10, 10, 10, 10, 10, 10, 10, 10, 10, 'asdf', 'asdf')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 528
+[07-Dec-2025 21:03:45 UTC] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:528
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(528): mysqli_stmt->bind_param('sssiiiiiiiiss', 'asdf', 'asf', '1', 10, 10, 10, 10, 10, 10, 10, 10, 10, 'asdf', 'sdf')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 528
+[07-Dec-2025 21:07:48 UTC] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php:528
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/admin/api.php(528): mysqli_stmt->bind_param('sssiiiiiiiiss', 'dasf', 'asf', '1', 10, 10, 10, 10, 10, 10, 10, 10, 10, 'asdf', 'sadf')
+#1 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/admin/api.php on line 528
