@@ -1053,21 +1053,57 @@ case 'update_stat':
         $entity_type = $_POST['entity_type'] ?? '';
         $entity_id = $_POST['entity_id'] ?? 0;
         $initiative = $_POST['initiative'] ?? 10;
-        
+
         $result = $conn->query("SELECT id FROM combat_sessions WHERE is_active = 1 LIMIT 1");
         $session = $result->fetch_assoc();
-        
+
         if (!$session) {
             echo json_encode(['success' => false, 'message' => 'No active combat session']);
             break;
         }
-        
+
+        // Get entity name and HP
+        $entity_name = '';
+        $current_hp = 0;
+
+        if ($entity_type === 'character') {
+            $stmt = $conn->prepare("SELECT c.name, cs.current_hp FROM characters c JOIN character_stats cs ON c.id = cs.character_id WHERE c.id = ?");
+            $stmt->bind_param("i", $entity_id);
+            $stmt->execute();
+            $entity = $stmt->get_result()->fetch_assoc();
+            $entity_name = $entity['name'] ?? 'Unknown';
+            $current_hp = $entity['current_hp'] ?? 10;
+        } else {
+            $stmt = $conn->prepare("SELECT name, current_hp FROM monsters WHERE id = ?");
+            $stmt->bind_param("i", $entity_id);
+            $stmt->execute();
+            $entity = $stmt->get_result()->fetch_assoc();
+            $entity_name = $entity['name'] ?? 'Unknown';
+            $current_hp = $entity['current_hp'] ?? 10;
+        }
+
+        // Check for duplicates and auto-number
+        $display_name = $entity_name;
+        if ($entity_type === 'monster') {
+            // Count existing instances of this monster in active combat
+            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM combat_participants WHERE session_id = ? AND entity_type = 'monster' AND entity_id = ?");
+            $stmt->bind_param("ii", $session['id'], $entity_id);
+            $stmt->execute();
+            $count_result = $stmt->get_result()->fetch_assoc();
+            $existing_count = $count_result['count'] ?? 0;
+
+            // If this is a duplicate, add number
+            if ($existing_count > 0) {
+                $display_name = $entity_name . ' ' . ($existing_count + 1);
+            }
+        }
+
         $max_result = $conn->query("SELECT MAX(turn_order) as max_order FROM combat_participants WHERE session_id = " . $session['id']);
         $max_row = $max_result->fetch_assoc();
         $turn_order = ($max_row['max_order'] ?? 0) + 1;
-        
-        $stmt = $conn->prepare("INSERT INTO combat_participants (session_id, entity_type, entity_id, initiative, turn_order) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("isiii", $session['id'], $entity_type, $entity_id, $initiative, $turn_order);
+
+        $stmt = $conn->prepare("INSERT INTO combat_participants (session_id, entity_type, entity_id, display_name, current_hp, initiative, turn_order) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isisiii", $session['id'], $entity_type, $entity_id, $display_name, $current_hp, $initiative, $turn_order);
         echo json_encode(['success' => $stmt->execute()]);
         break;
 
@@ -1082,17 +1118,42 @@ case 'update_stat':
 
     case 'adjust_combat_hp':
         requireDM();
-        $entity_type = $_POST['entity_type'] ?? '';
-        $entity_id = $_POST['entity_id'] ?? 0;
+        $participant_id = $_POST['participant_id'] ?? 0;
         $change = $_POST['change'] ?? 0;
-        
-        if ($entity_type === 'character') {
-            $stmt = $conn->prepare("UPDATE character_stats SET current_hp = GREATEST(0, LEAST(max_hp, current_hp + ?)) WHERE character_id = ?");
-        } else {
-            $stmt = $conn->prepare("UPDATE monsters SET current_hp = GREATEST(0, LEAST(max_hp, current_hp + ?)) WHERE id = ?");
+
+        // Get participant info and max HP
+        $stmt = $conn->prepare("
+            SELECT cp.entity_type, cp.entity_id, cp.current_hp,
+                   COALESCE(m.max_hp, cs.max_hp) as max_hp
+            FROM combat_participants cp
+            LEFT JOIN monsters m ON cp.entity_type = 'monster' AND cp.entity_id = m.id
+            LEFT JOIN character_stats cs ON cp.entity_type = 'character' AND cp.entity_id = cs.character_id
+            WHERE cp.id = ?
+        ");
+        $stmt->bind_param("i", $participant_id);
+        $stmt->execute();
+        $participant = $stmt->get_result()->fetch_assoc();
+
+        if (!$participant) {
+            echo json_encode(['success' => false, 'message' => 'Participant not found']);
+            break;
         }
-        $stmt->bind_param("ii", $change, $entity_id);
-        echo json_encode(['success' => $stmt->execute()]);
+
+        $new_hp = max(0, min($participant['max_hp'], $participant['current_hp'] + $change));
+
+        // Update participant's HP
+        $stmt = $conn->prepare("UPDATE combat_participants SET current_hp = ? WHERE id = ?");
+        $stmt->bind_param("ii", $new_hp, $participant_id);
+        $success = $stmt->execute();
+
+        // Also sync character HP back to character_stats for persistence
+        if ($success && $participant['entity_type'] === 'character') {
+            $stmt = $conn->prepare("UPDATE character_stats SET current_hp = ? WHERE character_id = ?");
+            $stmt->bind_param("ii", $new_hp, $participant['entity_id']);
+            $stmt->execute();
+        }
+
+        echo json_encode(['success' => $success, 'new_hp' => $new_hp]);
         break;
 
     case 'update_initiative':

@@ -5,10 +5,11 @@ $active_session = $conn->query("SELECT * FROM combat_sessions WHERE is_active = 
 if ($active_session) {
     // Get combat participants
     $participants = $conn->query("
-        SELECT 
+        SELECT
             cp.*,
+            COALESCE(cp.display_name, c.name, m.name) as display_name,
             c.name as character_name,
-            cs.current_hp as char_current_hp,
+            cp.current_hp,
             cs.max_hp as char_max_hp,
             cs.armor_class as char_ac,
             cs.strength as char_str,
@@ -18,7 +19,6 @@ if ($active_session) {
             cs.wisdom as char_wis,
             cs.charisma as char_cha,
             m.name as monster_name,
-            m.current_hp as mon_current_hp,
             m.max_hp as mon_max_hp,
             m.armor_class as mon_ac,
             m.strength as mon_str,
@@ -150,13 +150,13 @@ $available_monsters = $conn->query("
 
         <!-- Initiative Order -->
         <div class="space-y-3">
-            <?php $turn = 1; while ($participant = $participants->fetch_assoc()): 
+            <?php $turn = 1; while ($participant = $participants->fetch_assoc()):
                 $is_character = $participant['entity_type'] === 'character';
-                $name = $is_character ? $participant['character_name'] : $participant['monster_name'];
-                $current_hp = $is_character ? $participant['char_current_hp'] : $participant['mon_current_hp'];
+                $name = $participant['display_name'];
+                $current_hp = $participant['current_hp'];
                 $max_hp = $is_character ? $participant['char_max_hp'] : $participant['mon_max_hp'];
                 $ac = $is_character ? $participant['char_ac'] : $participant['mon_ac'];
-                
+
                 $hp_percent = ($max_hp > 0) ? ($current_hp / $max_hp) * 100 : 0;
                 $hp_color = $hp_percent > 50 ? 'bg-green-500' : ($hp_percent > 25 ? 'bg-yellow-500' : 'bg-red-500');
             ?>

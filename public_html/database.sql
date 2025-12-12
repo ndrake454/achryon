@@ -221,6 +221,8 @@ CREATE TABLE IF NOT EXISTS combat_participants (
     session_id INT NOT NULL,
     entity_type ENUM('character', 'monster') NOT NULL,
     entity_id INT NOT NULL,
+    display_name VARCHAR(100),
+    current_hp INT,
     initiative INT DEFAULT 0,
     turn_order INT DEFAULT 0,
     hp_visible BOOLEAN DEFAULT FALSE,
