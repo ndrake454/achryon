@@ -312,15 +312,24 @@ case 'update_stat':
         $char_id = $_POST['character_id'] ?? 0;
         $ability = $_POST['ability'] ?? '';
         $value = $_POST['value'] ?? 10;
-        
+
         $allowed_abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
         if (!in_array($ability, $allowed_abilities)) {
             echo json_encode(['success' => false, 'error' => 'Invalid ability']);
             break;
         }
-        
+
         $stmt = $conn->prepare("UPDATE character_stats SET $ability = ? WHERE character_id = ?");
         $stmt->bind_param("ii", $value, $char_id);
+        echo json_encode(['success' => $stmt->execute()]);
+        break;
+
+    case 'update_ability_points':
+        $char_id = $_POST['character_id'] ?? 0;
+        $points = $_POST['points'] ?? 0;
+
+        $stmt = $conn->prepare("UPDATE character_stats SET ability_points = ? WHERE character_id = ?");
+        $stmt->bind_param("ii", $points, $char_id);
         echo json_encode(['success' => $stmt->execute()]);
         break;
 

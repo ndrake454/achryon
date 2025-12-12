@@ -221,9 +221,21 @@ if ($statuses && $statuses->num_rows > 0):
 
 <!-- Ability Scores with Info Buttons -->
 <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-6">
-    <h3 class="text-lg font-bold text-white mb-4">Abilities</h3>
+    <?php $ability_points = $char['ability_points'] ?? 0; ?>
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-white">Abilities</h3>
+        <?php if ($ability_points > 0): ?>
+        <div class="flex items-center gap-2 bg-primary/20 border border-primary/50 rounded-lg px-3 py-1.5 animate-pulse">
+            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span class="text-sm font-bold text-white" id="abilityPointsDisplay"><?php echo $ability_points; ?></span>
+            <span class="text-xs text-gray-300">point<?php echo $ability_points != 1 ? 's' : ''; ?> available</span>
+        </div>
+        <?php endif; ?>
+    </div>
     <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
-        <?php 
+        <?php
         $abilities = [
             'STR' => ['strength', $char['strength'] ?? 10, 'Strength', 'Natural athleticism, bodily power'],
             'DEX' => ['dexterity', $char['dexterity'] ?? 10, 'Dexterity', 'Physical agility, reflexes, balance, poise'],
@@ -236,16 +248,25 @@ if ($statuses && $statuses->num_rows > 0):
             $modifier = floor(($data[1] - 10) / 2);
             $mod_display = ($modifier >= 0 ? '+' : '') . $modifier;
         ?>
-        <div class="bg-gray-800/50 rounded-lg p-3 text-center relative group">
-            <button onclick="showAbilityInfo('<?php echo $data[2]; ?>', '<?php echo $data[3]; ?>')" 
+        <div class="bg-gray-800/50 rounded-lg p-3 text-center relative group <?php echo $ability_points > 0 ? 'ring-2 ring-primary/30' : ''; ?>">
+            <button onclick="showAbilityInfo('<?php echo $data[2]; ?>', '<?php echo $data[3]; ?>')"
                     class="absolute top-1 right-1 w-5 h-5 bg-gray-700/50 hover:bg-gray-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                 <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </button>
+            <?php if ($ability_points > 0): ?>
+            <button onclick="upgradeAbility('<?php echo $data[0]; ?>', '<?php echo $abbr; ?>')"
+                    class="absolute top-1 left-1 w-6 h-6 bg-primary hover:bg-primary-dark rounded-full flex items-center justify-center transition hover:scale-110"
+                    title="Spend 1 ability point to increase <?php echo $abbr; ?>">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </button>
+            <?php endif; ?>
             <p class="text-gray-400 text-xs font-bold mb-1"><?php echo $abbr; ?></p>
-            <p class="text-2xl font-bold text-white"><?php echo $data[1]; ?></p>
-            <p class="text-sm <?php echo $modifier >= 0 ? 'text-green-400' : 'text-red-400'; ?>"><?php echo $mod_display; ?></p>
+            <p class="text-2xl font-bold text-white" id="ability_<?php echo $data[0]; ?>"><?php echo $data[1]; ?></p>
+            <p class="text-sm <?php echo $modifier >= 0 ? 'text-green-400' : 'text-red-400'; ?>" id="modifier_<?php echo $data[0]; ?>"><?php echo $mod_display; ?></p>
         </div>
         <?php endforeach; ?>
     </div>
@@ -887,6 +908,49 @@ async function removeItem(equipmentId, itemName) {
     } catch (error) {
         console.error('Error:', error);
         alert('An error occurred while removing the item');
+    }
+}
+
+// ===== Ability Functions =====
+async function upgradeAbility(ability, abbr) {
+    if (!confirm(`Spend 1 ability point to increase ${abbr} by 1?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/player/api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `action=spend_ability_point&character_id=${characterId}&ability=${ability}`
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            // Update the display immediately
+            const abilityEl = document.getElementById(`ability_${ability}`);
+            const modifierEl = document.getElementById(`modifier_${ability}`);
+            const pointsEl = document.getElementById('abilityPointsDisplay');
+
+            abilityEl.textContent = result.new_score;
+
+            const modDisplay = (result.modifier >= 0 ? '+' : '') + result.modifier;
+            modifierEl.textContent = modDisplay;
+            modifierEl.className = `text-sm ${result.modifier >= 0 ? 'text-green-400' : 'text-red-400'}`;
+
+            if (pointsEl) {
+                pointsEl.textContent = result.ability_points;
+            }
+
+            // If no points left, reload to remove the upgrade buttons
+            if (result.ability_points === 0) {
+                setTimeout(() => location.reload(), 500);
+            }
+        } else {
+            alert(result.message || 'Failed to upgrade ability');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while upgrading the ability');
     }
 }
 

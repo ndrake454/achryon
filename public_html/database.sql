@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS character_stats (
     intelligence INT DEFAULT 10,
     wisdom INT DEFAULT 10,
     charisma INT DEFAULT 10,
+    ability_points INT DEFAULT 0,
     armor_class INT DEFAULT 10,
     initiative INT DEFAULT 0,
     speed INT DEFAULT 30,

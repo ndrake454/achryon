@@ -294,6 +294,63 @@ switch ($action) {
         echo json_encode(['success' => $stmt->execute()]);
         break;
 
+    // ===== ABILITIES - Spend ability point to increase ability score =====
+    case 'spend_ability_point':
+        $character_id = $_POST['character_id'] ?? 0;
+        $ability = $_POST['ability'] ?? '';
+
+        if (!verifyCharacterOwnership($conn, $character_id, $current_user['id'])) {
+            echo json_encode(['success' => false, 'message' => 'Not authorized']);
+            exit();
+        }
+
+        // Validate ability name
+        $allowed_abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+        if (!in_array($ability, $allowed_abilities)) {
+            echo json_encode(['success' => false, 'message' => 'Invalid ability']);
+            exit();
+        }
+
+        // Get current ability points and ability score
+        $stmt = $conn->prepare("SELECT ability_points, $ability FROM character_stats WHERE character_id = ?");
+        $stmt->bind_param("i", $character_id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        if (!$result) {
+            echo json_encode(['success' => false, 'message' => 'Character stats not found']);
+            exit();
+        }
+
+        $current_points = $result['ability_points'];
+        $current_score = $result[$ability];
+
+        // Check if player has points to spend
+        if ($current_points <= 0) {
+            echo json_encode(['success' => false, 'message' => 'No ability points available']);
+            exit();
+        }
+
+        // Update: decrease ability points by 1, increase ability score by 1
+        $new_points = $current_points - 1;
+        $new_score = $current_score + 1;
+
+        $stmt = $conn->prepare("UPDATE character_stats SET ability_points = ?, $ability = ? WHERE character_id = ?");
+        $stmt->bind_param("iii", $new_points, $new_score, $character_id);
+
+        if ($stmt->execute()) {
+            $modifier = floor(($new_score - 10) / 2);
+            echo json_encode([
+                'success' => true,
+                'ability_points' => $new_points,
+                'new_score' => $new_score,
+                'modifier' => $modifier
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to update']);
+        }
+        break;
+
     // ===== POLLING - Get updated character data =====
     case 'poll_character':
         $character_id = $_GET['character_id'] ?? 0;

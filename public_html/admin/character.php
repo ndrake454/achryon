@@ -243,7 +243,19 @@ $skills = $skills_result ? $skills_result->fetch_assoc() : [];
 
         <!-- Ability Scores -->
         <div class="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-6">
-            <h3 class="text-xl font-bold text-white mb-4">Ability Scores</h3>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-white">Ability Scores</h3>
+                <div class="flex items-center gap-3 bg-primary/20 border border-primary/50 rounded-lg px-4 py-2">
+                    <label class="text-sm text-gray-300 font-medium">Ability Points:</label>
+                    <input type="number" id="ability_points" value="<?php echo $char['ability_points'] ?? 0; ?>"
+                        onchange="updateAbilityPoints(this.value)"
+                        min="0"
+                        class="w-20 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-center font-bold focus:outline-none focus:border-primary">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+            </div>
             <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
                 <?php 
                 $abilities = [
@@ -867,13 +879,22 @@ async function updateStat(stat, value) {
             formData.append('character_id', charId);
             formData.append('ability', ability);
             formData.append('value', value);
-            
+
             if (await apiCall(formData)) {
                 const modifier = Math.floor((parseInt(value) - 10) / 2);
                 const modEl = document.getElementById(ability + '_mod');
                 modEl.textContent = (modifier >= 0 ? '+' : '') + modifier;
                 modEl.className = modifier >= 0 ? 'text-lg text-green-400 font-bold' : 'text-lg text-red-400 font-bold';
             }
+        }
+
+        async function updateAbilityPoints(value) {
+            const formData = new FormData();
+            formData.append('action', 'update_ability_points');
+            formData.append('character_id', charId);
+            formData.append('points', value);
+
+            await apiCall(formData);
         }
 
         // Skills
