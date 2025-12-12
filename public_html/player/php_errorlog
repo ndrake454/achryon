@@ -1,0 +1,43 @@
+[08-Dec-2025 16:05:46 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 73
+[08-Dec-2025 16:05:46 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 76
+[08-Dec-2025 16:05:46 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 77
+[08-Dec-2025 16:05:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY created_at DESC' at line 1 in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php:152
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php(152): mysqli->query('SELECT * FROM c...')
+#1 /home/customer/www/achryon.firelight.academy/public_html/player/index.php(161): include('/home/customer/...')
+#2 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 152
+[08-Dec-2025 16:06:35 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 73
+[08-Dec-2025 16:06:35 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 76
+[08-Dec-2025 16:06:35 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 77
+[08-Dec-2025 16:06:35 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY created_at DESC' at line 1 in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php:152
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php(152): mysqli->query('SELECT * FROM c...')
+#1 /home/customer/www/achryon.firelight.academy/public_html/player/index.php(161): include('/home/customer/...')
+#2 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 152
+[11-Dec-2025 18:37:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'name' in 'order clause' in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php:392
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php(392): mysqli->query('SELECT * FROM c...')
+#1 /home/customer/www/achryon.firelight.academy/public_html/player/index.php(161): include('/home/customer/...')
+#2 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 392
+[11-Dec-2025 19:07:07 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'name' in 'order clause' in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php:422
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php(422): mysqli->query('SELECT * FROM c...')
+#1 /home/customer/www/achryon.firelight.academy/public_html/player/index.php(161): include('/home/customer/...')
+#2 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 422
+[11-Dec-2025 19:07:13 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'name' in 'order clause' in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php:422
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php(422): mysqli->query('SELECT * FROM c...')
+#1 /home/customer/www/achryon.firelight.academy/public_html/player/index.php(161): include('/home/customer/...')
+#2 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 422
+[11-Dec-2025 19:07:30 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'name' in 'order clause' in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php:392
+Stack trace:
+#0 /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php(392): mysqli->query('SELECT * FROM c...')
+#1 /home/customer/www/achryon.firelight.academy/public_html/player/index.php(161): include('/home/customer/...')
+#2 {main}
+  thrown in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 392
+[11-Dec-2025 19:34:10 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" in /home/customer/www/achryon.firelight.academy/public_html/player/player-tabs/character.php on line 1005
