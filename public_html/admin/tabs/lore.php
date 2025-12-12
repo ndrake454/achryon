@@ -121,17 +121,41 @@ $lore = $conn->query("SELECT * FROM lore ORDER BY order_index, created_at DESC")
 
                 <!-- Actions -->
                 <div class="flex items-center justify-between pt-4 border-t border-gray-800">
-                    <button 
-                        onclick="viewLore(<?php echo $entry['id']; ?>)" 
-                        class="text-gray-400 hover:text-white transition text-sm flex items-center space-x-1"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                        </svg>
-                        <span>View Full Content</span>
-                    </button>
-                    
+                    <div class="flex items-center gap-3">
+                        <button
+                            onclick="viewLore(<?php echo $entry['id']; ?>)"
+                            class="text-gray-400 hover:text-white transition text-sm flex items-center space-x-1"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <span>View Full Content</span>
+                        </button>
+
+                        <!-- Order Controls -->
+                        <div class="flex items-center gap-1 border-l border-gray-800 pl-3">
+                            <button
+                                onclick="moveLore(<?php echo $entry['id']; ?>, 'up')"
+                                class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded transition"
+                                title="Move Up"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                                </svg>
+                            </button>
+                            <button
+                                onclick="moveLore(<?php echo $entry['id']; ?>, 'down')"
+                                class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded transition"
+                                title="Move Down"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="flex gap-2">
                         <button onclick="editLore(<?php echo $entry['id']; ?>)" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition text-sm flex items-center space-x-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,9 +190,9 @@ $lore = $conn->query("SELECT * FROM lore ORDER BY order_index, created_at DESC")
 </div>
 
 <!-- View Lore Modal -->
-<div id="viewModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-    <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-2xl w-full max-w-4xl my-8">
-        <div class="sticky top-0 bg-gray-900 p-6 border-b border-gray-800 rounded-t-xl flex items-center justify-between">
+<div id="viewModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col my-8">
+        <div class="sticky top-0 bg-gray-900 p-6 border-b border-gray-800 rounded-t-xl flex-shrink-0 flex items-center justify-between">
             <h3 id="viewTitle" class="text-2xl font-bold text-white"></h3>
             <button onclick="hideViewModal()" class="text-gray-400 hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,19 +200,19 @@ $lore = $conn->query("SELECT * FROM lore ORDER BY order_index, created_at DESC")
                 </svg>
             </button>
         </div>
-        <div class="p-6">
+        <div class="p-6 overflow-y-auto flex-1">
             <div id="viewContent" class="prose prose-invert prose-lg max-w-none"></div>
         </div>
     </div>
 </div>
 
 <!-- Create/Edit Lore Modal -->
-<div id="loreModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-    <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-2xl w-full max-w-5xl my-8">
-        <div class="sticky top-0 bg-gray-900 p-6 border-b border-gray-800 rounded-t-xl">
+<div id="loreModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col my-8">
+        <div class="sticky top-0 bg-gray-900 p-6 border-b border-gray-800 rounded-t-xl flex-shrink-0">
             <h3 id="modalTitle" class="text-2xl font-bold text-white">Create Lore Entry</h3>
         </div>
-        <form id="loreForm" onsubmit="saveLore(event)" class="p-6">
+        <form id="loreForm" onsubmit="saveLore(event)" class="p-6 overflow-y-auto flex-1">
             <input type="hidden" id="loreId" name="id">
             
             <div class="space-y-5">
@@ -596,15 +620,15 @@ async function toggleVisibility(id, visible) {
     formData.append('action', 'toggle_lore_visibility');
     formData.append('id', id);
     formData.append('visible', visible ? 1 : 0);
-    
+
     try {
         const response = await fetch('/admin/api.php', {
             method: 'POST',
             body: formData
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             location.reload();
         } else {
@@ -613,6 +637,31 @@ async function toggleVisibility(id, visible) {
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to update visibility');
+    }
+}
+
+async function moveLore(id, direction) {
+    const formData = new FormData();
+    formData.append('action', 'reorder_lore');
+    formData.append('id', id);
+    formData.append('direction', direction);
+
+    try {
+        const response = await fetch('/admin/api.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            location.reload();
+        } else {
+            alert('Failed to reorder lore');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to reorder lore');
     }
 }
 

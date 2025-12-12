@@ -779,19 +779,73 @@ case 'update_stat':
 
     case 'get_lore':
         $id = $_GET['id'] ?? 0;
-        
+
         $stmt = $conn->prepare("SELECT * FROM lore WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $lore = $stmt->get_result()->fetch_assoc();
-        
+
         // Players can only see visible lore
         if (!isDM() && $lore && !$lore['visible_to_players']) {
             echo json_encode(['success' => false, 'message' => 'Access denied']);
             break;
         }
-        
+
         echo json_encode(['success' => $lore !== null, 'lore' => $lore]);
+        break;
+
+    case 'reorder_lore':
+        requireDM();
+        $id = $_POST['id'] ?? 0;
+        $direction = $_POST['direction'] ?? 'up';
+
+        $stmt = $conn->prepare("SELECT order_index FROM lore WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $current = $stmt->get_result()->fetch_assoc();
+
+        if (!$current) {
+            echo json_encode(['success' => false]);
+            break;
+        }
+
+        $current_order = $current['order_index'];
+
+        if ($direction === 'up') {
+            $stmt = $conn->prepare("SELECT id FROM lore WHERE order_index < ? ORDER BY order_index DESC LIMIT 1");
+            $stmt->bind_param("i", $current_order);
+            $stmt->execute();
+            $swap = $stmt->get_result()->fetch_assoc();
+
+            if ($swap) {
+                $stmt = $conn->prepare("UPDATE lore SET order_index = ? WHERE id = ?");
+                $stmt->bind_param("ii", $current_order, $swap['id']);
+                $stmt->execute();
+
+                $new_order = $current_order - 1;
+                $stmt = $conn->prepare("UPDATE lore SET order_index = ? WHERE id = ?");
+                $stmt->bind_param("ii", $new_order, $id);
+                $stmt->execute();
+            }
+        } else {
+            $stmt = $conn->prepare("SELECT id FROM lore WHERE order_index > ? ORDER BY order_index ASC LIMIT 1");
+            $stmt->bind_param("i", $current_order);
+            $stmt->execute();
+            $swap = $stmt->get_result()->fetch_assoc();
+
+            if ($swap) {
+                $stmt = $conn->prepare("UPDATE lore SET order_index = ? WHERE id = ?");
+                $stmt->bind_param("ii", $current_order, $swap['id']);
+                $stmt->execute();
+
+                $new_order = $current_order + 1;
+                $stmt = $conn->prepare("UPDATE lore SET order_index = ? WHERE id = ?");
+                $stmt->bind_param("ii", $new_order, $id);
+                $stmt->execute();
+            }
+        }
+
+        echo json_encode(['success' => true]);
         break;
 
     // ==================== RULES ====================
