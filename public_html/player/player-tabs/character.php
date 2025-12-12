@@ -448,10 +448,16 @@ if ($equipment && $equipment->num_rows > 0):
                             <?php endif; ?>
                         </p>
                     </div>
-                    <button onclick="showItemDetails(<?php echo $item_json; ?>)" 
+                    <button onclick="showItemDetails(<?php echo $item_json; ?>)"
                             class="text-gray-500 hover:text-white transition p-1" title="View details">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </button>
+                    <button onclick="removeItem(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['item_name'], ENT_QUOTES); ?>')"
+                            class="text-gray-500 hover:text-red-500 transition p-1" title="Remove item">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
                     </button>
                 </div>
@@ -495,10 +501,16 @@ if ($equipment && $equipment->num_rows > 0):
                         <?php endif; ?>
                     </p>
                 </div>
-                <button onclick="showItemDetails(<?php echo $item_json; ?>)" 
+                <button onclick="showItemDetails(<?php echo $item_json; ?>)"
                         class="text-gray-500 hover:text-white transition p-1" title="View details">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </button>
+                <button onclick="removeItem(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['item_name'], ENT_QUOTES); ?>')"
+                        class="text-gray-500 hover:text-red-500 transition p-1" title="Remove item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
                 </button>
             </div>
@@ -845,12 +857,36 @@ async function toggleEquipment(equipmentId, element) {
             body: `action=toggle_equipment&character_id=${characterId}&equipment_id=${equipmentId}`
         });
         const result = await response.json();
-        
+
         if (result.success) {
             location.reload();
         }
     } catch (error) {
         console.error('Error:', error);
+    }
+}
+
+async function removeItem(equipmentId, itemName) {
+    if (!confirm(`Remove '${itemName}' from your inventory? This cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/player/api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `action=remove_item&character_id=${characterId}&equipment_id=${equipmentId}`
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            location.reload();
+        } else {
+            alert(result.message || 'Failed to remove item');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while removing the item');
     }
 }
 

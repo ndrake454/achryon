@@ -265,7 +265,35 @@ switch ($action) {
         
         echo json_encode(['success' => $stmt->execute(), 'is_equipped' => (bool)$new_status]);
         break;
-    
+
+    // ===== EQUIPMENT - Remove item from inventory =====
+    case 'remove_item':
+        $character_id = $_POST['character_id'] ?? 0;
+        $equipment_id = $_POST['equipment_id'] ?? 0;
+
+        if (!verifyCharacterOwnership($conn, $character_id, $current_user['id'])) {
+            echo json_encode(['success' => false, 'message' => 'Not authorized']);
+            exit();
+        }
+
+        // Verify the equipment belongs to this character before deleting
+        $stmt = $conn->prepare("SELECT id FROM character_equipment WHERE id = ? AND character_id = ?");
+        $stmt->bind_param("ii", $equipment_id, $character_id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        if (!$result) {
+            echo json_encode(['success' => false, 'message' => 'Equipment not found']);
+            exit();
+        }
+
+        // Delete the item permanently
+        $stmt = $conn->prepare("DELETE FROM character_equipment WHERE id = ?");
+        $stmt->bind_param("i", $equipment_id);
+
+        echo json_encode(['success' => $stmt->execute()]);
+        break;
+
     // ===== POLLING - Get updated character data =====
     case 'poll_character':
         $character_id = $_GET['character_id'] ?? 0;
