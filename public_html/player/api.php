@@ -242,28 +242,56 @@ switch ($action) {
     case 'toggle_equipment':
         $character_id = $_POST['character_id'] ?? 0;
         $equipment_id = $_POST['equipment_id'] ?? 0;
-        
+
         if (!verifyCharacterOwnership($conn, $character_id, $current_user['id'])) {
             echo json_encode(['success' => false, 'message' => 'Not authorized']);
             exit();
         }
-        
+
         // Verify the equipment belongs to this character
         $stmt = $conn->prepare("SELECT id, is_equipped FROM character_equipment WHERE id = ? AND character_id = ?");
         $stmt->bind_param("ii", $equipment_id, $character_id);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
-        
+
         if (!$result) {
             echo json_encode(['success' => false, 'message' => 'Equipment not found']);
             exit();
         }
-        
+
         $new_status = $result['is_equipped'] ? 0 : 1;
         $stmt = $conn->prepare("UPDATE character_equipment SET is_equipped = ? WHERE id = ?");
         $stmt->bind_param("ii", $new_status, $equipment_id);
-        
+
         echo json_encode(['success' => $stmt->execute(), 'is_equipped' => (bool)$new_status]);
+        break;
+
+    // ===== EQUIPMENT - Remove item from inventory =====
+    case 'remove_item':
+        $character_id = $_POST['character_id'] ?? 0;
+        $equipment_id = $_POST['equipment_id'] ?? 0;
+
+        if (!verifyCharacterOwnership($conn, $character_id, $current_user['id'])) {
+            echo json_encode(['success' => false, 'message' => 'Not authorized']);
+            exit();
+        }
+
+        // Verify the equipment belongs to this character
+        $stmt = $conn->prepare("SELECT id FROM character_equipment WHERE id = ? AND character_id = ?");
+        $stmt->bind_param("ii", $equipment_id, $character_id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        if (!$result) {
+            echo json_encode(['success' => false, 'message' => 'Equipment not found']);
+            exit();
+        }
+
+        // Delete the item
+        $stmt = $conn->prepare("DELETE FROM character_equipment WHERE id = ?");
+        $stmt->bind_param("i", $equipment_id);
+
+        echo json_encode(['success' => $stmt->execute()]);
         break;
     
     // ===== POLLING - Get updated character data =====
